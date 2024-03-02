@@ -1,9 +1,10 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { Dumbbell, Home, Utensils } from "lucide-react";
+import { Dumbbell, Home, Settings, Utensils } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import NavBarItem from "./NavBarItem";
 
 function NavBar() {
   interface NavItem {
@@ -19,35 +20,27 @@ function NavBar() {
     },
     {
       name: "Workouts",
-      link: "/workouts",
+      link: "/dashboard/workouts",
       icon: <Dumbbell />,
     },
     {
       name: "Nutrition",
-      link: "/nutrition",
+      link: "/dashboard/nutrition",
       icon: <Utensils />,
     },
   ];
 
   const pathname = usePathname();
-  console.log(pathname);
+
   return (
-    <nav>
-      <div className="flex flex-col gap-4">
+    <nav className="flex flex-col">
+      <div className="flex flex-col gap-4 ">
         {navItems.map((item) => (
-          <Link href={item.link} key={item.name}>
-            <div
-              className={cn(
-                `flex items-center gap-4 p-3 rounded-md cursor-pointer transition-colors duration-300 hover:bg-accent`,
-                pathname === item.link
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-transparent"
-              )}
-            >
-              <p className="">{item.icon}</p>
-              <p>{item.name}</p>
-            </div>
-          </Link>
+          <NavBarItem
+            key={item.name}
+            item={item}
+            active={pathname === item.link}
+          />
         ))}
       </div>
     </nav>
