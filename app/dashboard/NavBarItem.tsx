@@ -1,13 +1,10 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
+import { NavItem } from "./NavBar";
 
 interface NavItemProps {
-  item: {
-    name: string;
-    icon: React.ReactNode;
-    link: string;
-  };
+  item: NavItem;
   active: boolean;
 }
 function NavBarItem({ item, active }: NavItemProps) {
@@ -19,7 +16,7 @@ function NavBarItem({ item, active }: NavItemProps) {
           active ? "bg-primary text-primary-foreground" : "bg-transparent"
         )}
       >
-        <p className="">{item.icon}</p>
+        <p>{item.icon}</p>
         <p>{item.name}</p>
       </div>
     </Link>

@@ -1,17 +1,16 @@
 "use client";
-import { cn } from "@/lib/utils";
 import { Dumbbell, Home, Settings, Utensils } from "lucide-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import NavBarItem from "./NavBarItem";
 
+export interface NavItem {
+  name: string;
+  link: string;
+  icon: React.ReactNode;
+}
+
 function NavBar() {
-  interface NavItem {
-    name: string;
-    link: string;
-    icon: React.ReactNode;
-  }
   const navItems: NavItem[] = [
     {
       name: "Home",
