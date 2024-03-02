@@ -8,15 +8,15 @@ import { usePathname } from "next/navigation";
 function Header() {
   const pathname = usePathname();
   return (
-    <header className="sticky top-0 z-50 bg-background shadow-sm border-b">
+    <header className="bg-background shadow-sm border-b py-6 px-12">
       {/* Logo */}
-      <div className="flex justify-between items-center my-4 mx-8">
+      <div className="flex justify-between items-center mx-8">
         <Link href="/">
           <h1 className="text-4xl font-bold">
             Ash<span className="text-primary">Notes</span>
           </h1>
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           {pathname !== "/" && (
             <SignedOut>
               <Button>

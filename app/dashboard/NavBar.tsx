@@ -32,7 +32,7 @@ function NavBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col">
+    <nav className="flex flex-col ">
       <div className="flex flex-col gap-4 ">
         {navItems.map((item) => (
           <NavBarItem
