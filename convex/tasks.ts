@@ -27,10 +27,21 @@ export const deleteTask = mutation({
   },
 });
 
+export const toggleCompleteTask = mutation({
+  args: { id: v.id("tasks"), isCompleted: v.boolean() },
+  handler: async (ctx, { id, isCompleted }) => {
+    await ctx.db.patch(id, { isCompleted });
+  },
+});
+
 export const getTaskList = query({
   args: {},
   handler: async (ctx, args) => {
-    const tasks = await ctx.db.query("tasks").order("desc").collect();
+    const tasks = await ctx.db
+      .query("tasks")
+      .withIndex("by_isCompleted")
+      .order("desc")
+      .collect();
     return tasks;
   },
 });

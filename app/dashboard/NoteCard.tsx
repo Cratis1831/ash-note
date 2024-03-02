@@ -9,56 +9,65 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDistance, subDays } from "date-fns";
-import { TrashIcon } from "@radix-ui/react-icons";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Doc, Id } from "@/convex/_generated/dataModel";
+import { ConvexError } from "convex/values";
+import { useState } from "react";
 
-interface NoteCardProps {
-  id: string;
-  title: string;
-  description: string;
-  isCompleted: boolean;
-  creationTime: number;
-}
-
-function NoteCard({
-  id,
-  title,
-  isCompleted,
-  description,
-  creationTime,
-}: NoteCardProps) {
-  const creationDate = formatDistance(new Date(creationTime), new Date(), {
+function NoteCard(task: Doc<"tasks">) {
+  const [toggleComplete, setToggleComplete] = useState(false);
+  const creationTimeToDate = new Date(task._creationTime);
+  const today = new Date();
+  const creationDate = formatDistance(creationTimeToDate, today, {
     addSuffix: true,
   });
 
   const deleteTask = useMutation(api.tasks.deleteTask);
-  const handleDelete = async (id: string) => {
+  const toggleTaskCompletion = useMutation(api.tasks.toggleCompleteTask);
+
+  const handleToggle = async (id: Id<"tasks">) => {
     try {
-      // await deleteTask(id);
+      setToggleComplete(!toggleComplete);
+      await toggleTaskCompletion({ id, isCompleted: toggleComplete });
     } catch (error) {
-      console.error(error);
+      throw new ConvexError("Unable to toggle task completion");
+    }
+  };
+  const handleDelete = async (id: Id<"tasks">) => {
+    try {
+      await deleteTask({ id });
+    } catch (error) {
+      throw new ConvexError("Unable to delete task");
     }
   };
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex flex-row justify-between items-center">
-          <p>{title}</p>
-          <Button variant="ghost" size="sm">
+          <p>{task.title}</p>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleDelete(task._id)}
+          >
             <Trash2 />
           </Button>
         </CardTitle>
         <CardDescription className="text-xs">{creationDate}</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>{description}</p>
+        <p>{task.description}</p>
       </CardContent>
       <CardFooter>
-        <Badge variant={isCompleted ? "success" : "secondary"}>
-          {isCompleted ? "Complete" : "In Progress"}
+        <Badge
+          variant={task.isCompleted ? "success" : "secondary"}
+          onClick={() => handleToggle(task._id)}
+          className="cursor-pointer"
+        >
+          {task.isCompleted ? "Complete" : "In Progress"}
         </Badge>
       </CardFooter>
     </Card>
