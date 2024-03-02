@@ -10,11 +10,17 @@ import { Badge } from "@/components/ui/badge";
 import { formatDistance, subDays } from "date-fns";
 
 interface NoteCardProps {
-  text: string;
+  title: string;
+  description: string;
   isCompleted: boolean;
   creationTime: number;
 }
-function NoteCard({ text, isCompleted, creationTime }: NoteCardProps) {
+function NoteCard({
+  title,
+  isCompleted,
+  description,
+  creationTime,
+}: NoteCardProps) {
   const creationDate = formatDistance(new Date(creationTime), new Date(), {
     addSuffix: true,
   });
@@ -22,7 +28,7 @@ function NoteCard({ text, isCompleted, creationTime }: NoteCardProps) {
     <Card>
       <CardHeader>
         <CardTitle className="flex flex-row justify-between items-center">
-          {text}{" "}
+          {title}{" "}
           <Badge variant={isCompleted ? "success" : "outline"}>
             {isCompleted ? "Complete" : "In Progress"}
           </Badge>
@@ -30,11 +36,11 @@ function NoteCard({ text, isCompleted, creationTime }: NoteCardProps) {
         <CardDescription className="text-xs">{creationDate}</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        <p>{description}</p>
       </CardContent>
-      <CardFooter>
+      {/* <CardFooter>
         <p>Card Footer</p>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }
