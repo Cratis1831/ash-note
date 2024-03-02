@@ -1,5 +1,8 @@
+"use client";
+import { cn } from "@/lib/utils";
 import { Dumbbell, Home, Utensils } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 function NavBar() {
@@ -25,13 +28,23 @@ function NavBar() {
       icon: <Utensils />,
     },
   ];
+
+  const pathname = usePathname();
+  console.log(pathname);
   return (
     <nav>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-4">
         {navItems.map((item) => (
           <Link href={item.link} key={item.name}>
-            <div className="flex gap-4">
-              <p className="text-primary">{item.icon}</p>
+            <div
+              className={cn(
+                `flex items-center gap-4 p-3 rounded-md cursor-pointer transition-colors duration-300 hover:bg-accent`,
+                pathname === item.link
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-transparent"
+              )}
+            >
+              <p className="">{item.icon}</p>
               <p>{item.name}</p>
             </div>
           </Link>
