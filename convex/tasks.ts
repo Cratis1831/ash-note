@@ -1,4 +1,4 @@
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 export const get = query({
@@ -8,7 +8,14 @@ export const get = query({
   },
 });
 
-// Return the last 100 tasks in a given task list.
+export const addTask = mutation({
+  args: { text: v.string() },
+  handler: async (ctx, { text }) => {
+    const task = await ctx.db.insert("tasks", { text, isCompleted: false });
+    return task;
+  },
+});
+
 export const getTaskList = query({
   args: {},
   handler: async (ctx, args) => {
