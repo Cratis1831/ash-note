@@ -1,4 +1,6 @@
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { ToggleMode } from "./ToggleMode";
+import { Button } from "./ui/button";
 
 function Header() {
   return (
@@ -8,7 +10,17 @@ function Header() {
         <h1 className="text-4xl font-bold">
           Ash<span className="text-primary">Notes</span>
         </h1>
-        <ToggleMode />
+        <div className="flex items-center gap-2">
+          <SignedOut>
+            <Button>
+              <SignInButton mode="modal" afterSignInUrl="/dashboard" />
+            </Button>
+          </SignedOut>
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+          <ToggleMode />
+        </div>
       </div>
     </header>
   );
