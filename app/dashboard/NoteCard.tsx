@@ -11,27 +11,31 @@ import { Badge } from "@/components/ui/badge";
 import { formatDistance, subDays } from "date-fns";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { ConvexError } from "convex/values";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 function NoteCard(task: Doc<"tasks">) {
-  const [toggleComplete, setToggleComplete] = useState(false);
-  const creationTimeToDate = new Date(task._creationTime);
-  const today = new Date();
-  const creationDate = formatDistance(creationTimeToDate, today, {
-    addSuffix: true,
-  });
+  const creationTimeToDate = useMemo(
+    () => new Date(task._creationTime),
+    [task._creationTime]
+  );
+
+  const creationDate = useMemo(
+    () => formatDistance(creationTimeToDate, new Date(), { addSuffix: true }),
+    [creationTimeToDate]
+  );
 
   const deleteTask = useMutation(api.tasks.deleteTask);
   const toggleTaskCompletion = useMutation(api.tasks.toggleCompleteTask);
 
-  const handleToggle = async (id: Id<"tasks">) => {
+  const handleToggle = async (task: Doc<"tasks">) => {
     try {
-      setToggleComplete(!toggleComplete);
-      await toggleTaskCompletion({ id, isCompleted: toggleComplete });
+      await toggleTaskCompletion({
+        id: task._id,
+      });
     } catch (error) {
       throw new ConvexError("Unable to toggle task completion");
     }
@@ -40,6 +44,7 @@ function NoteCard(task: Doc<"tasks">) {
     try {
       await deleteTask({ id });
     } catch (error) {
+      console.log(error);
       throw new ConvexError("Unable to delete task");
     }
   };
@@ -64,7 +69,7 @@ function NoteCard(task: Doc<"tasks">) {
       <CardFooter>
         <Badge
           variant={task.isCompleted ? "success" : "secondary"}
-          onClick={() => handleToggle(task._id)}
+          onClick={() => handleToggle(task)}
           className="cursor-pointer"
         >
           {task.isCompleted ? "Complete" : "In Progress"}

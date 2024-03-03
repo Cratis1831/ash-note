@@ -28,9 +28,13 @@ export const deleteTask = mutation({
 });
 
 export const toggleCompleteTask = mutation({
-  args: { id: v.id("tasks"), isCompleted: v.boolean() },
-  handler: async (ctx, { id, isCompleted }) => {
-    await ctx.db.patch(id, { isCompleted });
+  args: { id: v.id("tasks") },
+  handler: async (ctx, { id }) => {
+    const task = await ctx.db.get(id);
+    if (!task) {
+      throw new Error(`No task found with id ${id}`);
+    }
+    await ctx.db.patch(id, { isCompleted: !task.isCompleted });
   },
 });
 
@@ -39,7 +43,7 @@ export const getTaskList = query({
   handler: async (ctx, args) => {
     const tasks = await ctx.db
       .query("tasks")
-      .withIndex("by_isCompleted")
+      // .withIndex("by_isCompleted")
       .order("desc")
       .collect();
     return tasks;
