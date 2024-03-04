@@ -13,25 +13,30 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/convex/_generated/api";
+import { useAuth } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 
 function CreateNote() {
   const addTask = useMutation(api.tasks.addTask);
+  const { userId } = useAuth();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleAddTask = async () => {
     try {
       setIsSubmitting(true);
       if (title === "" || description === "") {
-        return;
+        throw new Error("Title and description are required");
+        // TODO: Add Form and zod for validation
       }
       await addTask({
         title,
         description,
+        userId: userId ?? "",
       });
     } catch (error) {
       console.log(error);

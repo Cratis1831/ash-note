@@ -1,7 +1,6 @@
 "use client";
-import { Dumbbell, Home, ListTodo, Settings, Utensils } from "lucide-react";
+import { Dumbbell, Home, ListTodo } from "lucide-react";
 import { usePathname } from "next/navigation";
-import React from "react";
 import NavBarItem from "./NavBarItem";
 
 export interface NavItem {

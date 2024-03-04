@@ -4,9 +4,15 @@ import NoteCard from "./_components/NoteCard";
 import Image from "next/image";
 import CreateNote from "./_components/CreateNote";
 import { useQuery } from "convex/react";
+import { useAuth } from "@clerk/nextjs";
+import { Loader2 } from "lucide-react";
 
 function Dashboard() {
-  const tasks = useQuery(api.tasks.getTaskList);
+  const { userId } = useAuth();
+
+  const tasks = useQuery(api.tasks.getTaskList, { userId: userId ?? "" });
+
+  const isLoading = tasks === undefined;
 
   return (
     <div className="pl-8 pr-8">
@@ -16,18 +22,25 @@ function Dashboard() {
         <CreateNote />
       </div>
       <div className="flex items-center justify-center mt-12 md:mt-32">
+        {isLoading && (
+          <div className="flex flex-col gap-8 w-full items-center mt-24">
+            <Loader2 className="h-16 w-16 animate-spin text-primary" />
+            <div className="text-2xl">Loading your files...</div>
+          </div>
+        )}
         {tasks !== undefined && tasks?.length === 0 && (
           <div className="flex flex-col items-center justify-center gap-8">
             <Image
               src="/no_data.svg"
-              width="400"
-              height="400"
+              width="300"
+              height="300"
               alt="image showing no data"
+              className=""
+              priority
             />
-            <p className="text-3xl">No notes found!</p>
+            <p className="text-2xl">You have no notes, add some now</p>
           </div>
         )}
-        {tasks === undefined && <p>Loading tasks...</p>}
       </div>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mx-auto">
         {tasks?.map((task) => (

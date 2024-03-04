@@ -1,5 +1,5 @@
 import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 
 export const get = query({
   args: {},
@@ -9,12 +9,20 @@ export const get = query({
 });
 
 export const addTask = mutation({
-  args: { title: v.string(), description: v.string() },
-  handler: async (ctx, { title, description }) => {
+  args: { title: v.string(), description: v.string(), userId: v.string() },
+  handler: async (ctx, { title, description, userId }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new ConvexError("User not authenticated");
+    }
+    if (identity.subject !== userId) {
+      throw new ConvexError("User not authorized");
+    }
     const task = await ctx.db.insert("tasks", {
       title,
       description,
       isCompleted: false,
+      userId,
     });
     return task;
   },
@@ -39,11 +47,12 @@ export const toggleCompleteTask = mutation({
 });
 
 export const getTaskList = query({
-  args: {},
+  args: { userId: v.string() },
   handler: async (ctx, args) => {
     const tasks = await ctx.db
       .query("tasks")
-      // .withIndex("by_isCompleted")
+      .withIndex("by_userId")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
       .order("desc")
       .collect();
     return tasks;

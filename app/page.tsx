@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { SignUpButton, SignedOut } from "@clerk/nextjs";
+import { SignInButton, SignedOut } from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -10,9 +10,13 @@ export default function Home() {
         </h1>
       </div>
       <SignedOut>
-        <SignUpButton mode="modal" afterSignInUrl="/dashboard">
+        <SignInButton
+          mode="modal"
+          afterSignInUrl="/dashboard"
+          afterSignUpUrl="/dashboard"
+        >
           <Button size="lg"> Get Started</Button>
-        </SignUpButton>
+        </SignInButton>
       </SignedOut>
     </main>
   );

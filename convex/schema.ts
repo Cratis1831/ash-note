@@ -6,5 +6,8 @@ export default defineSchema({
     isCompleted: v.boolean(),
     title: v.string(),
     description: v.string(),
-  }).index("by_isCompleted", ["isCompleted"]),
+    userId: v.string(),
+  })
+    .index("by_isCompleted", ["isCompleted"])
+    .index("by_userId", ["userId"]),
 });

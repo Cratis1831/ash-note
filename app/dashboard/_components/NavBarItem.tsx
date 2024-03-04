@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React from "react";
 import { NavItem } from "./NavBar";
 
 interface NavItemProps {
