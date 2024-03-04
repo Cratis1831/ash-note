@@ -8,14 +8,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { formatDistance, subDays } from "date-fns";
+import { formatDistance } from "date-fns";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { ConvexError } from "convex/values";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 function NoteCard(task: Doc<"tasks">) {
   const creationTimeToDate = useMemo(
@@ -51,8 +51,8 @@ function NoteCard(task: Doc<"tasks">) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex flex-row justify-between items-center text-lg ">
-          <p className="text-primary">{task.title}</p>
+        <CardTitle className="flex flex-row justify-between items-center text-lg gap-2">
+          <p className="text-primary truncate">{task.title}</p>
           <Button
             variant="destructive"
             size="sm"

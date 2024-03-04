@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -15,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 
 function CreateNote() {
@@ -23,8 +22,10 @@ function CreateNote() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleAddTask = async () => {
     try {
+      setIsSubmitting(true);
       if (title === "" || description === "") {
         return;
       }
@@ -38,6 +39,7 @@ function CreateNote() {
     setIsOpen(false);
     setTitle("");
     setDescription("");
+    setIsSubmitting(false);
   };
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
@@ -46,7 +48,7 @@ function CreateNote() {
           <Plus className="mr-2" /> Create a new note
         </Button>
       </DialogTrigger>
-      <DialogContent className="">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>New Note</DialogTitle>
           <DialogDescription>
@@ -80,7 +82,10 @@ function CreateNote() {
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleAddTask}>Create Note</Button>
+          <Button onClick={handleAddTask} disabled={isSubmitting}>
+            {isSubmitting && <Loader2 className="mr-2 animate-spin" />}
+            Create Note
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

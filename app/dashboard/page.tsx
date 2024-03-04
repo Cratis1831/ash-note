@@ -1,24 +1,21 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
-import { useMutation, useQuery } from "convex/react";
-import NoteCard from "./NoteCard";
-import { Plus } from "lucide-react";
+import NoteCard from "./_components/NoteCard";
 import Image from "next/image";
-import SearchBar from "./SearchBar";
-import CreateNote from "./CreateNote";
+import CreateNote from "./_components/CreateNote";
+import { useQuery } from "convex/react";
 
 function Dashboard() {
   const tasks = useQuery(api.tasks.getTaskList);
 
   return (
-    <div className="pl-4 pr-12">
+    <div className="pl-8 pr-8">
       <div className="flex items-center justify-between mx-auto mt-4">
-        <h1 className="text-4xl font-semibold">Your Notes</h1>
+        <h1 className="text-2xl md:text-4xl font-semibold">Your Notes</h1>
         {/* <SearchBar /> */}
         <CreateNote />
       </div>
-      <div className="flex items-center justify-center mt-32">
+      <div className="flex items-center justify-center mt-12 md:mt-32">
         {tasks !== undefined && tasks?.length === 0 && (
           <div className="flex flex-col items-center justify-center gap-8">
             <Image
