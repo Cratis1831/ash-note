@@ -29,7 +29,7 @@ function Dashboard() {
             <div className="text-2xl">Loading your files...</div>
           </div>
         )}
-        {tasks !== undefined && tasks?.length === 0 && (
+        {!isLoading && tasks.length === 0 && (
           <div className="flex flex-col items-center justify-center gap-8 ">
             <Image
               src="/no_data.svg"
@@ -43,7 +43,7 @@ function Dashboard() {
           </div>
         )}
       </div>
-      {tasks !== undefined && tasks?.length !== 0 && (
+      {!isLoading && tasks.length > 0 && (
         <Tabs defaultValue="Grid">
           <TabsList className="mb-4">
             <TabsTrigger value="Grid">Grid View</TabsTrigger>
@@ -61,7 +61,7 @@ function Dashboard() {
             </div>
           </TabsContent>
           <TabsContent value="List" className="hidden md:flex">
-            <div className="flex flex-col gap-8 max-w-2xl">
+            <div className="flex flex-col gap-8 w-full max-w-6xl">
               {tasks?.map((task) => (
                 <div key={task._id}>
                   <NoteCard task={task} />

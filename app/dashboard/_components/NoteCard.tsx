@@ -53,6 +53,7 @@ function NoteCard({ task, gridView }: NoteCardProps) {
       throw new ConvexError("Unable to delete task");
     }
   };
+
   return (
     <Card>
       <CardHeader>
