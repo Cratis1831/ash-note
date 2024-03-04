@@ -4,12 +4,11 @@ import { ToggleMode } from "./ToggleMode";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
 import DrawerMenu from "./DrawerMenu";
 
-function Logo({ isLoggedIn }: { isLoggedIn: boolean }) {
+function Logo() {
   return (
-    <Link href={isLoggedIn ? "/dashboard" : "/"}>
+    <Link href="/dashboard">
       <h1 className="text-2xl md:text-4xl font-bold">
         Ash<span className="text-primary">Notes</span>
       </h1>
@@ -21,19 +20,15 @@ function Header() {
   const pathname = usePathname();
   return (
     <header className="bg-background shadow-sm border-b py-6 md:px-12 sticky top-0">
-      {/* Logo */}
       <div className="flex justify-between items-center mx-8">
-        <SignedOut>
-          <Logo isLoggedIn={false} />
-        </SignedOut>
+        {/* Logo */}
         <SignedIn>
           {/* Mobile Menu on SignedIn */}
           <div className="md:hidden">
             <DrawerMenu />
           </div>
-          {/* Logo */}
-          <Logo isLoggedIn={true} />
         </SignedIn>
+        <Logo />
         <div className="flex items-center gap-4">
           {pathname !== "/" && (
             <SignedOut>

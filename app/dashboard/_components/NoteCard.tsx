@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { Badge } from "@/components/ui/badge";
 import { formatDistance } from "date-fns";
 import { Trash2 } from "lucide-react";
@@ -17,7 +18,11 @@ import { Doc, Id } from "@/convex/_generated/dataModel";
 import { ConvexError } from "convex/values";
 import { useMemo } from "react";
 
-function NoteCard(task: Doc<"tasks">) {
+interface NoteCardProps {
+  task: Doc<"tasks">;
+  gridView?: boolean;
+}
+function NoteCard({ task, gridView }: NoteCardProps) {
   const creationTimeToDate = useMemo(
     () => new Date(task._creationTime),
     [task._creationTime]
@@ -51,21 +56,23 @@ function NoteCard(task: Doc<"tasks">) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex flex-row justify-between items-center text-lg gap-2">
-          <p className="text-primary truncate">{task.title}</p>
+        <CardTitle className="flex flex-row justify-between items-center text-sm md:text-lg gap-2">
+          <p className="text-primary md:truncate sm:text-wrap">{task.title}</p>
           <Button
             variant="destructive"
             size="sm"
             onClick={() => handleDelete(task._id)}
           >
-            <Trash2 />
+            <Trash2 size={20} />
           </Button>
         </CardTitle>
         <CardDescription className="text-xs">{creationDate}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <p>{task.description}</p>
-      </CardContent>
+      {gridView && (
+        <CardContent>
+          <p>{task.description}</p>
+        </CardContent>
+      )}
       <CardFooter>
         <Badge
           variant={task.isCompleted ? "success" : "secondary"}
