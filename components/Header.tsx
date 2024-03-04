@@ -11,11 +11,20 @@ function Header() {
     <header className="bg-background shadow-sm border-b py-6 px-12">
       {/* Logo */}
       <div className="flex justify-between items-center mx-8">
-        <Link href="/">
-          <h1 className="text-4xl font-bold">
-            Ash<span className="text-primary">Notes</span>
-          </h1>
-        </Link>
+        <SignedOut>
+          <Link href="/">
+            <h1 className="text-4xl font-bold">
+              Ash<span className="text-primary">Notes</span>
+            </h1>
+          </Link>
+        </SignedOut>
+        <SignedIn>
+          <Link href="/dashboard">
+            <h1 className="text-4xl font-bold">
+              Ash<span className="text-primary">Notes</span>
+            </h1>
+          </Link>
+        </SignedIn>
         <div className="flex items-center gap-4">
           {pathname !== "/" && (
             <SignedOut>

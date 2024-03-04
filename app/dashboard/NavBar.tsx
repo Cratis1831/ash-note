@@ -1,5 +1,5 @@
 "use client";
-import { Dumbbell, Home, Settings, Utensils } from "lucide-react";
+import { Dumbbell, Home, ListTodo, Settings, Utensils } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";
 import NavBarItem from "./NavBarItem";
@@ -23,16 +23,16 @@ function NavBar() {
       icon: <Dumbbell />,
     },
     {
-      name: "Nutrition",
-      link: "/dashboard/nutrition",
-      icon: <Utensils />,
+      name: "Habit Tracker",
+      link: "/dashboard/habit-tracker",
+      icon: <ListTodo />,
     },
   ];
 
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col ">
+    <nav className="flex flex-col">
       <div className="flex flex-col gap-4 ">
         {navItems.map((item) => (
           <NavBarItem

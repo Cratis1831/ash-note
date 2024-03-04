@@ -51,10 +51,10 @@ function NoteCard(task: Doc<"tasks">) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex flex-row justify-between items-center">
-          <p>{task.title}</p>
+        <CardTitle className="flex flex-row justify-between items-center text-lg ">
+          <p className="text-primary">{task.title}</p>
           <Button
-            variant="ghost"
+            variant="destructive"
             size="sm"
             onClick={() => handleDelete(task._id)}
           >

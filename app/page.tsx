@@ -10,11 +10,9 @@ export default function Home() {
         </h1>
       </div>
       <SignedOut>
-        <Button size="lg">
-          <SignUpButton mode="modal" afterSignInUrl="/dashboard">
-            Get Started
-          </SignUpButton>
-        </Button>
+        <SignUpButton mode="modal" afterSignInUrl="/dashboard">
+          <Button size="lg"> Get Started</Button>
+        </SignUpButton>
       </SignedOut>
     </main>
   );

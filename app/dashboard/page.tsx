@@ -6,26 +6,17 @@ import NoteCard from "./NoteCard";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import SearchBar from "./SearchBar";
+import CreateNote from "./CreateNote";
 
 function Dashboard() {
   const tasks = useQuery(api.tasks.getTaskList);
-  const addTask = useMutation(api.tasks.addTask);
 
   return (
     <div className="pl-4 pr-12">
       <div className="flex items-center justify-between mx-auto mt-4">
         <h1 className="text-4xl font-semibold">Your Notes</h1>
-        <SearchBar />
-        <Button
-          onClick={() =>
-            addTask({
-              title: "My New Task",
-              description: "Description of the task",
-            })
-          }
-        >
-          <Plus className="mr-2" /> Create a new note
-        </Button>
+        {/* <SearchBar /> */}
+        <CreateNote />
       </div>
       <div className="flex items-center justify-center mt-32">
         {tasks !== undefined && tasks?.length === 0 && (
