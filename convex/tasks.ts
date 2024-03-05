@@ -46,6 +46,17 @@ export const toggleCompleteTask = mutation({
   },
 });
 
+export const updateTask = mutation({
+  args: { id: v.id("tasks"), title: v.string(), description: v.string() },
+  handler: async (ctx, { id, title, description }) => {
+    const task = await ctx.db.get(id);
+    if (!task) {
+      throw new Error(`No task found with id ${id}`);
+    }
+    await ctx.db.patch(id, { title, description });
+  },
+});
+
 export const getTaskList = query({
   args: { userId: v.string() },
   handler: async (ctx, args) => {

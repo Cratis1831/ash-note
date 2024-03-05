@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import ConvexClientProvider from "@/providers/ConvexClientProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import Header from "@/components/Header";
+import { Toaster } from "@/components/ui/toaster";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
           <ConvexClientProvider>
             <Header />
             {children}
+            <Toaster />
           </ConvexClientProvider>
         </ThemeProvider>
       </body>
