@@ -68,25 +68,25 @@ function NoteDetails() {
       {!isLoading && (
         <div className="flex flex-col max-w-xl gap-6 ml-6">
           <div>
-            <Label htmlFor="title" className="text-right">
+            <Label htmlFor="title" className="text-right text-primary">
               Title
             </Label>
             <Input
               id="title"
               placeholder="Title of the note"
-              className="col-span-3 text-primary"
+              className="col-span-3 mt-2"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
           <div>
-            <Label htmlFor="description" className="text-right">
+            <Label htmlFor="description" className="text-right text-primary">
               Description
             </Label>
             <Textarea
               id="description"
               placeholder="Description of the note"
-              className="col-span-3 text-primary"
+              className="col-span-3 mt-2"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
