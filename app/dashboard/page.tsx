@@ -24,22 +24,20 @@ function Dashboard() {
 
   return (
     <div className="pl-8 pr-8 mb-8">
-      <div className="flex items-center justify-between mx-auto mt-4">
-        <h1 className="text-2xl md:text-4xl font-semibold">Your Notes</h1>
+      <h1 className="text-2xl md:text-4xl font-semibold pb-4">Your Notes</h1>
+      <div className="flex justify-between mt-4 gap-2">
         {/* <SearchBar /> */}
+        <SearchBar search={search} setSearch={setSearch} />
         <CreateNote />
       </div>
-      <div className="flex items-center justify-center mt-12 md:mt-32">
-        <div className="flex flex-1 items-center justify-center mb-4 md:max-w-7xl">
-          <SearchBar search={search} setSearch={setSearch} />
-        </div>
+      <div className="flex items-center justify-center mt-12 md:mt-16">
         {isLoading && (
           <div className="flex flex-col gap-8 w-full items-center mt-24">
             <Loader2 className="h-16 w-16 animate-spin text-primary" />
             <div className="text-2xl">Loading your notes...</div>
           </div>
         )}
-        {!isLoading && tasks.length === 0 && (
+        {!isLoading && filteredTasks?.length === 0 && (
           <div className="flex flex-col items-center justify-center gap-8 ">
             <Image
               src="/no_data.svg"
@@ -53,7 +51,7 @@ function Dashboard() {
           </div>
         )}
       </div>
-      {!isLoading && tasks.length > 0 && (
+      {!isLoading && filteredTasks?.length! > 0 && (
         <Tabs defaultValue="Grid">
           <TabsList className="mb-4">
             <TabsTrigger value="Grid">Grid View</TabsTrigger>

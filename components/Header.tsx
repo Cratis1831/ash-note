@@ -19,7 +19,7 @@ function Logo() {
 function Header() {
   const pathname = usePathname();
   return (
-    <header className="bg-background shadow-sm border-b py-6 md:px-12 sticky top-0">
+    <header className="bg-background shadow-sm border-b py-6 md:px-12 sticky top-0 z-50">
       <div className="flex justify-between items-center mx-8">
         {/* Logo */}
         <SignedIn>
@@ -29,6 +29,7 @@ function Header() {
           </div>
         </SignedIn>
         <Logo />
+
         <div className="flex items-center gap-4">
           {pathname !== "/" && (
             <SignedOut>

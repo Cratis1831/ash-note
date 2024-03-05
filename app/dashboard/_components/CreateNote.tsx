@@ -50,7 +50,8 @@ function CreateNote() {
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
       <DialogTrigger asChild>
         <Button>
-          <Plus className="mr-2" /> Create a new note
+          <Plus className="mr-2" />
+          Create a new note
         </Button>
       </DialogTrigger>
       <DialogContent>

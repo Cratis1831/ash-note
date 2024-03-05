@@ -14,7 +14,7 @@ function SearchBar({ setSearch, search }: SearchBarProps) {
     setSearch(e.target.value);
   };
   return (
-    <div className="relative flex w-full max-w-7xl items-center mx-6">
+    <div className="relative flex w-full items-center mx-6">
       <Search className="absolute left-2" />
       <Input
         type="search"
