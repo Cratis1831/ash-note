@@ -17,6 +17,7 @@ import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { ConvexError } from "convex/values";
 import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 
 interface NoteCardProps {
   task: Doc<"tasks">;
@@ -53,12 +54,18 @@ function NoteCard({ task, gridView }: NoteCardProps) {
       throw new ConvexError("Unable to delete task");
     }
   };
+  const router = useRouter();
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex flex-row justify-between items-center text-sm md:text-lg gap-2">
-          <p className="text-primary md:truncate sm:text-wrap">{task.title}</p>
+          <p
+            className="text-primary md:truncate sm:text-wrap cursor-pointer hover:underline"
+            onClick={() => router.push(`/dashboard/note/${task._id}`)}
+          >
+            {task.title}
+          </p>
           <Button
             variant="destructive"
             size="sm"

@@ -26,7 +26,7 @@ function Dashboard() {
         {isLoading && (
           <div className="flex flex-col gap-8 w-full items-center mt-24">
             <Loader2 className="h-16 w-16 animate-spin text-primary" />
-            <div className="text-2xl">Loading your files...</div>
+            <div className="text-2xl">Loading your notes...</div>
           </div>
         )}
         {!isLoading && tasks.length === 0 && (

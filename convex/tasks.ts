@@ -58,3 +58,14 @@ export const getTaskList = query({
     return tasks;
   },
 });
+
+export const getTask = query({
+  args: { id: v.id("tasks") },
+  handler: async (ctx, args) => {
+    const task = await ctx.db.get(args.id);
+    if (!task) {
+      throw new Error(`No task found with id ${args.id}`);
+    }
+    return task;
+  },
+});

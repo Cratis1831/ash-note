@@ -38,6 +38,9 @@ function Header() {
             </SignedOut>
           )}
           <SignedIn>
+            <Button variant="ghost" asChild className="hidden md:block">
+              <Link href="/dashboard">Dashboard</Link>
+            </Button>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
           <ToggleMode />
