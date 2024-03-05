@@ -57,7 +57,7 @@ function NoteDetails() {
   }, [task]);
 
   return (
-    <div className="flex flex-col max-w-xl gap-6 ml-6">
+    <div className="flex flex-col max-w-sm md:max-w-xl gap-6 ml-6">
       {isLoading && (
         <div className="flex flex-col gap-8 w-full items-center mt-24">
           <Loader2 className="h-16 w-16 animate-spin text-primary" />

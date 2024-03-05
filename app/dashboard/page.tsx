@@ -16,7 +16,7 @@ function Dashboard() {
   const isLoading = tasks === undefined;
 
   return (
-    <div className="pl-8 pr-8">
+    <div className="pl-8 pr-8 mb-8">
       <div className="flex items-center justify-between mx-auto mt-4">
         <h1 className="text-2xl md:text-4xl font-semibold">Your Notes</h1>
         {/* <SearchBar /> */}
