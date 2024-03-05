@@ -39,7 +39,10 @@ function Header() {
             </SignedOut>
           )}
           <SignedIn>
-            <Button variant="ghost" asChild className="hidden md:block">
+            <Button
+              className="hidden md:flex items-center justify-center"
+              asChild
+            >
               <Link href="/dashboard">Dashboard</Link>
             </Button>
             <UserButton afterSignOutUrl="/" />

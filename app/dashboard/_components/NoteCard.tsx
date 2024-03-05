@@ -116,7 +116,7 @@ function NoteCard({ task, gridView }: NoteCardProps) {
         <CardHeader>
           <CardTitle className="flex flex-row justify-between items-center text-sm md:text-lg gap-4">
             <div className="flex items-center gap-2 md:truncate">
-              <NotebookPen size={30} />
+              <NotebookPen size={30} className="text-primary" />
               <p
                 className="sm:text-wrap cursor-pointer font-bold md:truncate"
                 onClick={() => router.push(`/dashboard/note/${task._id}`)}
