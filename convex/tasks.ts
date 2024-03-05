@@ -94,7 +94,7 @@ export const getTaskList = query({
 });
 
 export const getTask = query({
-  args: { id: v.id("tasks") },
+  args: { id: v.id("tasks"), userId: v.string() },
   handler: async (ctx, args) => {
     const hasAccess = await handleAccess(ctx);
 
@@ -102,9 +102,15 @@ export const getTask = query({
       return null;
     }
 
-    const task = await ctx.db.get(args.id);
+    const task = await ctx.db
+      .query("tasks")
+      .withIndex("by_userId")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+
     if (!task) {
-      throw new Error(`No task found with id ${args.id}`);
+      return null;
     }
     return task;
   },

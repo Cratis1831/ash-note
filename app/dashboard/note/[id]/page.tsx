@@ -5,25 +5,31 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useMutation, useQuery } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { Loader2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { useUser } from "@clerk/nextjs";
 
 function NoteDetails() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { user } = useUser();
+
+  let userId: string | undefined = undefined;
+
+  userId = user?.id ?? "";
+
   const { id } = useParams();
   const { toast } = useToast();
+  const router = useRouter();
 
-  const task = useQuery(api.tasks.getTask, { id: id as Id<"tasks"> });
+  const task = useQuery(api.tasks.getTask, { id: id as Id<"tasks">, userId });
   const updateTask = useMutation(api.tasks.updateTask);
   const isLoading = task === undefined;
-
-  const router = useRouter();
 
   const handleUpdateTask = async (id: Id<"tasks">) => {
     try {
@@ -68,7 +74,7 @@ function NoteDetails() {
         </div>
       )}
 
-      {!isLoading && (
+      {!isLoading && task !== null && (
         <div className="flex flex-col max-w-xl gap-6 ml-6">
           <div>
             <Label htmlFor="title" className="text-right text-primary">
@@ -95,7 +101,7 @@ function NoteDetails() {
             />
           </div>
           <Button
-            onClick={() => handleUpdateTask(task._id)}
+            onClick={() => handleUpdateTask(task!._id)}
             disabled={isSubmitting}
           >
             {isSubmitting && <Loader2 className="mr-2 animate-spin" />}

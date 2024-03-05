@@ -18,6 +18,7 @@ function SearchBar({ setSearch, search }: SearchBarProps) {
       <Search className="absolute left-2" />
       <Input
         type="search"
+        id="search"
         placeholder="Search a note..."
         value={search}
         onChange={(e) => handleSearch(e)}
