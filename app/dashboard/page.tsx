@@ -5,15 +5,22 @@ import Image from "next/image";
 import CreateNote from "./_components/CreateNote";
 import { useQuery } from "convex/react";
 import { useAuth } from "@clerk/nextjs";
-import { Loader2 } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SearchBar from "./_components/SearchBar";
+import { useState } from "react";
 
 function Dashboard() {
   const { userId } = useAuth();
+  const [search, setSearch] = useState("");
 
   const tasks = useQuery(api.tasks.getTaskList, { userId: userId ?? "" });
 
   const isLoading = tasks === undefined;
+
+  const filteredTasks = tasks?.filter((task) =>
+    task.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="pl-8 pr-8 mb-8">
@@ -23,6 +30,9 @@ function Dashboard() {
         <CreateNote />
       </div>
       <div className="flex items-center justify-center mt-12 md:mt-32">
+        <div className="flex flex-1 items-center justify-center mb-4 md:max-w-7xl">
+          <SearchBar search={search} setSearch={setSearch} />
+        </div>
         {isLoading && (
           <div className="flex flex-col gap-8 w-full items-center mt-24">
             <Loader2 className="h-16 w-16 animate-spin text-primary" />
@@ -53,7 +63,7 @@ function Dashboard() {
           </TabsList>
           <TabsContent value="Grid">
             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mx-auto ">
-              {tasks?.map((task) => (
+              {filteredTasks?.map((task) => (
                 <div key={task._id}>
                   <NoteCard task={task} gridView />
                 </div>
@@ -62,7 +72,7 @@ function Dashboard() {
           </TabsContent>
           <TabsContent value="List" className="hidden md:flex">
             <div className="flex flex-col gap-8 w-full max-w-6xl">
-              {tasks?.map((task) => (
+              {filteredTasks?.map((task) => (
                 <div key={task._id}>
                   <NoteCard task={task} />
                 </div>

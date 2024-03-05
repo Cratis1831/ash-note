@@ -7,10 +7,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { formatDistance } from "date-fns";
-import { Trash2 } from "lucide-react";
+import {
+  Edit2,
+  MoreVertical,
+  NotebookPen,
+  Trash2,
+  TrashIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -59,20 +71,40 @@ function NoteCard({ task, gridView }: NoteCardProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex flex-row justify-between items-center text-sm md:text-lg gap-2">
-          <p
-            className="text-primary md:truncate sm:text-wrap cursor-pointer hover:underline"
-            onClick={() => router.push(`/dashboard/note/${task._id}`)}
-          >
-            {task.title}
-          </p>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => handleDelete(task._id)}
-          >
-            <Trash2 size={20} />
-          </Button>
+        <CardTitle className="flex flex-row justify-between items-center text-sm md:text-lg gap-4">
+          <div className="flex items-center gap-2 md:truncate">
+            <NotebookPen size={30} />
+            <p
+              className="sm:text-wrap cursor-pointer font-bold md:truncate"
+              onClick={() => router.push(`/dashboard/note/${task._id}`)}
+            >
+              {task.title}
+            </p>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <MoreVertical size={20} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => router.push(`/dashboard/note/${task._id}`)}
+                className="flex gap-1 items-center cursor-pointer"
+              >
+                <div className="flex gap-1 items-center cursor-pointer">
+                  <Edit2 className="w-4 h-4" /> Edit
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleDelete(task._id)}
+                className="flex gap-1 items-center cursor-pointer"
+              >
+                <div className="flex gap-1 text-red-600 items-center cursor-pointer">
+                  <TrashIcon className="w-4 h-4" /> Delete
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </CardTitle>
         <CardDescription className="text-xs">{creationDate}</CardDescription>
       </CardHeader>
