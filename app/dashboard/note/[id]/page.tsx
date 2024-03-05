@@ -7,7 +7,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Loader2 } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -22,6 +22,8 @@ function NoteDetails() {
   const task = useQuery(api.tasks.getTask, { id: id as Id<"tasks"> });
   const updateTask = useMutation(api.tasks.updateTask);
   const isLoading = task === undefined;
+
+  const router = useRouter();
 
   const handleUpdateTask = async (id: Id<"tasks">) => {
     try {
@@ -47,6 +49,7 @@ function NoteDetails() {
       });
     }
     setIsSubmitting(false);
+    router.back();
   };
 
   useEffect(() => {

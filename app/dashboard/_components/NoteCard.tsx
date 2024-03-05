@@ -110,7 +110,7 @@ function NoteCard({ task, gridView }: NoteCardProps) {
       </CardHeader>
       {gridView && (
         <CardContent>
-          <p>{task.description}</p>
+          <p className="text-sm">{task.description}</p>
         </CardContent>
       )}
       <CardFooter>

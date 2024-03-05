@@ -4,17 +4,22 @@ import NoteCard from "./_components/NoteCard";
 import Image from "next/image";
 import CreateNote from "./_components/CreateNote";
 import { useQuery } from "convex/react";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { Loader2, Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SearchBar from "./_components/SearchBar";
 import { useState } from "react";
 
 function Dashboard() {
-  const { userId } = useAuth();
+  const { user, isLoaded } = useUser();
   const [search, setSearch] = useState("");
 
-  const tasks = useQuery(api.tasks.getTaskList, { userId: userId ?? "" });
+  let userId: string | undefined = undefined;
+  if (isLoaded) {
+    userId = user?.id ?? "";
+  }
+
+  const tasks = useQuery(api.tasks.getTaskList, userId ? { userId } : "skip");
 
   const isLoading = tasks === undefined;
 
