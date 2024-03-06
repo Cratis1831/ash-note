@@ -5,17 +5,19 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { Loader2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
+import { Switch } from "@/components/ui/switch";
 
 function NoteDetails() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const { user } = useUser();
 
@@ -65,6 +67,7 @@ function NoteDetails() {
     if (task) {
       setTitle(task.title);
       setDescription(task.description);
+      setIsCompleted(task.isCompleted);
     }
   }, [task]);
 
@@ -102,6 +105,36 @@ function NoteDetails() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+          </div>
+
+          <div>
+            <Label htmlFor="slug" className="text-right text-primary">
+              Slug
+            </Label>
+            <div className="col-span-3 mt-2">
+              <Input
+                id="slug"
+                placeholder="Slug of the note"
+                className="col-span-3 mt-2 cursor-not-allowed"
+                value={slug}
+                disabled
+              />
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <Label
+                htmlFor="complete-status"
+                className="text-right text-primary"
+              >
+                Complete?
+              </Label>
+              <Switch
+                id="complete-status"
+                checked={isCompleted}
+                onCheckedChange={(checked) => setIsCompleted(checked)} // TODO: Add mutation to update isCompleted and Fix Setting
+              />
+            </div>
           </div>
           <Button
             onClick={() => handleUpdateTask(task!._id)}
