@@ -9,6 +9,8 @@ import { Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SearchBar from "./_components/SearchBar";
 import { useState } from "react";
+import { DataTable } from "@/components/ui/data-table";
+import { columns } from "./_components/columns";
 
 function Placeholder() {
   return (
@@ -64,8 +66,8 @@ function Dashboard() {
         <Tabs defaultValue="Grid">
           <TabsList className="mb-4">
             <TabsTrigger value="Grid">Grid View</TabsTrigger>
-            <TabsTrigger value="List" className="hidden md:flex">
-              List View
+            <TabsTrigger value="DataTable" className="hidden md:flex">
+              Table View
             </TabsTrigger>
           </TabsList>
           <TabsContent value="Grid">
@@ -77,14 +79,8 @@ function Dashboard() {
               ))}
             </div>
           </TabsContent>
-          <TabsContent value="List" className="hidden md:flex">
-            <div className="flex flex-col gap-8 w-full max-w-6xl">
-              {filteredTasks?.map((task) => (
-                <div key={task._id}>
-                  <NoteCard task={task} />
-                </div>
-              ))}
-            </div>
+          <TabsContent value="DataTable" className="hidden md:flex">
+            <DataTable columns={columns} data={filteredTasks} />
           </TabsContent>
         </Tabs>
       )}
