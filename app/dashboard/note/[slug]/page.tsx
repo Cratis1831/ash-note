@@ -23,11 +23,14 @@ function NoteDetails() {
 
   userId = user?.id ?? "";
 
-  const { id } = useParams();
+  const { slug } = useParams();
   const { toast } = useToast();
   const router = useRouter();
 
-  const task = useQuery(api.tasks.getTask, { id: id as Id<"tasks">, userId });
+  const task = useQuery(api.tasks.getTaskBySlug, {
+    slug: slug as string,
+    userId,
+  });
   const updateTask = useMutation(api.tasks.updateTask);
   const isLoading = task === undefined;
 

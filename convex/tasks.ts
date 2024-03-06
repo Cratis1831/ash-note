@@ -1,5 +1,14 @@
 import { MutationCtx, QueryCtx, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import slugify from "slugify";
+
+const createSlug = (title: string) => {
+  return slugify(title, {
+    lower: true,
+    strict: true,
+    remove: /[*+~.()'"!:@]/g,
+  });
+};
 
 export async function handleAccess(ctx: QueryCtx | MutationCtx) {
   const identity = await ctx.auth.getUserIdentity();
@@ -24,6 +33,7 @@ export const addTask = mutation({
       description,
       isCompleted: false,
       userId,
+      slug: createSlug(title),
     });
     return task;
   },
@@ -90,6 +100,29 @@ export const getTaskList = query({
       .order("desc")
       .collect();
     return tasks;
+  },
+});
+
+export const getTaskBySlug = query({
+  args: { slug: v.string(), userId: v.string() },
+  handler: async (ctx, args) => {
+    const hasAccess = await handleAccess(ctx);
+
+    if (!hasAccess) {
+      return null;
+    }
+
+    const task = await ctx.db
+      .query("tasks")
+      .withIndex("by_userId")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .filter((q) => q.eq(q.field("slug"), args.slug))
+      .first();
+
+    if (!task) {
+      return null;
+    }
+    return task;
   },
 });
 

@@ -7,7 +7,9 @@ export default defineSchema({
     title: v.string(),
     description: v.string(),
     userId: v.string(),
+    slug: v.string(),
   })
     .index("by_isCompleted", ["isCompleted"])
-    .index("by_userId", ["userId"]),
+    .index("by_userId", ["userId"])
+    .index("by_slug", ["slug"]),
 });

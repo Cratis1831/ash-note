@@ -119,7 +119,7 @@ function NoteCard({ task, gridView }: NoteCardProps) {
               <NotebookPen size={30} className="text-primary" />
               <p
                 className="sm:text-wrap cursor-pointer font-bold md:truncate"
-                onClick={() => router.push(`/dashboard/note/${task._id}`)}
+                onClick={() => router.push(`/dashboard/note/${task.slug}`)}
               >
                 {task.title}
               </p>
@@ -131,7 +131,7 @@ function NoteCard({ task, gridView }: NoteCardProps) {
               <DropdownMenuContent>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => router.push(`/dashboard/note/${task._id}`)}
+                  onClick={() => router.push(`/dashboard/note/${task.slug}`)}
                   className="flex gap-1 items-center cursor-pointer"
                 >
                   <div className="flex gap-1 items-center cursor-pointer">
