@@ -69,8 +69,13 @@ export const toggleCompleteTask = mutation({
 });
 
 export const updateTask = mutation({
-  args: { id: v.id("tasks"), title: v.string(), description: v.string() },
-  handler: async (ctx, { id, title, description }) => {
+  args: {
+    id: v.id("tasks"),
+    title: v.string(),
+    description: v.string(),
+    isCompleted: v.boolean(),
+  },
+  handler: async (ctx, { id, title, description, isCompleted }) => {
     const hasAccess = await handleAccess(ctx);
 
     if (!hasAccess) {
@@ -80,7 +85,7 @@ export const updateTask = mutation({
     if (!task) {
       throw new Error(`No task found with id ${id}`);
     }
-    await ctx.db.patch(id, { title, description });
+    await ctx.db.patch(id, { title, description, isCompleted });
   },
 });
 

@@ -47,6 +47,7 @@ function NoteDetails() {
         id: id,
         title,
         description,
+        isCompleted: isCompleted,
       });
       toast({
         variant: "success",
