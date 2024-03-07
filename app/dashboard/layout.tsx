@@ -1,11 +1,13 @@
 import NextBreadcrumb from "@/components/BreadCrumbs";
 import NavBar from "./_components/NavBar";
+import { auth } from "@clerk/nextjs/server";
 
 export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  auth().protect();
   return (
     <div className="bg-[#fafafa] dark:bg-background">
       <aside className="hidden border-r flex-col md:flex ml-8 pr-8 md:inset-y-28 md:fixed md:h-screen">
