@@ -1,5 +1,5 @@
 import { MutationCtx, QueryCtx, mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 import slugify from "slugify";
 
 const createSlug = (title: string) => {
@@ -90,18 +90,20 @@ export const updateTask = mutation({
 });
 
 export const getTaskList = query({
-  args: { userId: v.string() },
+  args: {},
   handler: async (ctx, args) => {
-    const hasAccess = await handleAccess(ctx);
+    const identity = await ctx.auth.getUserIdentity();
 
-    if (!hasAccess) {
-      return null;
+    if (!identity) {
+      throw new Error("Not authenticated");
     }
+
+    const userId = identity.subject;
 
     const tasks = await ctx.db
       .query("tasks")
       .withIndex("by_userId")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .filter((q) => q.eq(q.field("userId"), userId))
       .order("desc")
       .collect();
     return tasks;

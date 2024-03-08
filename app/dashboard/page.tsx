@@ -3,7 +3,7 @@ import { api } from "@/convex/_generated/api";
 import NoteCard from "./_components/NoteCard";
 import Image from "next/image";
 import CreateNote from "./_components/CreateNote";
-import { useQuery } from "convex/react";
+import { useQuery, useConvexAuth } from "convex/react";
 import { useUser } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,17 +29,27 @@ function Placeholder() {
 }
 
 function Dashboard() {
-  const { user, isLoaded } = useUser();
   const [search, setSearch] = useState("");
 
-  let userId: string | undefined = undefined;
-  if (isLoaded) {
-    userId = user?.id ?? "";
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  const tasks = useQuery(
+    api.tasks.getTaskList,
+    isAuthenticated ? undefined : "skip"
+  );
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center mt-12 md:mt-16">
+        <div className="flex flex-col gap-8 w-full items-center mt-24">
+          <Loader2 className="h-16 w-16 animate-spin text-primary" />
+          <div className="text-2xl">Loading your notes...</div>
+        </div>
+      </div>
+    );
   }
 
-  const tasks = useQuery(api.tasks.getTaskList, userId ? { userId } : "skip");
-
-  const isLoading = tasks === undefined;
+  // const isLoading = tasks === undefined;
 
   const filteredTasks = tasks?.filter((task) =>
     task.title.toLowerCase().includes(search.toLowerCase())
@@ -53,14 +63,6 @@ function Dashboard() {
         <SearchBar search={search} setSearch={setSearch} />
         <CreateNote />
       </div>
-      {isLoading && (
-        <div className="flex items-center justify-center mt-12 md:mt-16">
-          <div className="flex flex-col gap-8 w-full items-center mt-24">
-            <Loader2 className="h-16 w-16 animate-spin text-primary" />
-            <div className="text-2xl">Loading your notes...</div>
-          </div>
-        </div>
-      )}
       {filteredTasks?.length === 0 && <Placeholder />}
       {filteredTasks && filteredTasks?.length > 0 && (
         <Tabs defaultValue="Grid">
