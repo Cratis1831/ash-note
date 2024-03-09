@@ -1,5 +1,5 @@
 import { MutationCtx, QueryCtx, mutation, query } from "./_generated/server";
-import { ConvexError, v } from "convex/values";
+import { v } from "convex/values";
 import slugify from "slugify";
 
 const createSlug = (title: string) => {
@@ -20,8 +20,17 @@ export async function handleAccess(ctx: QueryCtx | MutationCtx) {
 }
 
 export const addTask = mutation({
-  args: { title: v.string(), description: v.string(), userId: v.string() },
-  handler: async (ctx, { title, description, userId }) => {
+  args: {
+    title: v.string(),
+    description: v.string(),
+    userId: v.string(),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("in progress"),
+      v.literal("completed")
+    ),
+  },
+  handler: async (ctx, { title, description, userId, status }) => {
     const hasAccess = await handleAccess(ctx);
 
     if (!hasAccess) {
@@ -34,6 +43,7 @@ export const addTask = mutation({
       isCompleted: false,
       userId,
       slug: createSlug(title),
+      status,
     });
     return task;
   },
@@ -74,6 +84,11 @@ export const updateTask = mutation({
     title: v.string(),
     description: v.string(),
     isCompleted: v.boolean(),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("in progress"),
+      v.literal("completed")
+    ),
   },
   handler: async (ctx, { id, title, description, isCompleted }) => {
     const hasAccess = await handleAccess(ctx);

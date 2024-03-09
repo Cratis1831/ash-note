@@ -37,6 +37,7 @@ function CreateNote() {
         title,
         description,
         userId: userId ?? "",
+        status: "pending",
       });
     } catch (error) {
       console.log(error);
