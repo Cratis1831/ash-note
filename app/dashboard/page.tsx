@@ -1,13 +1,13 @@
 "use client";
 import { api } from "@/convex/_generated/api";
-import NoteCard from "./_components/NoteCard";
+import NoteCard from "./_components/note-card";
 import Image from "next/image";
-import CreateNote from "./_components/CreateNote";
+import CreateNote from "./_components/create-note";
 import { useQuery, useConvexAuth } from "convex/react";
 import { useUser } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SearchBar from "./_components/SearchBar";
+import SearchBar from "./_components/search-bar";
 import { useState } from "react";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./_components/columns";

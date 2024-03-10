@@ -1,10 +1,10 @@
 "use client";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { ToggleMode } from "./ToggleMode";
+import { ToggleMode } from "./toggle-mode";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import DrawerMenu from "./DrawerMenu";
+import DrawerMenu from "./drawer-menu";
 
 function Logo() {
   return (

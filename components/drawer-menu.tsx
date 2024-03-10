@@ -1,5 +1,5 @@
 "use client";
-import NavBar from "@/app/dashboard/_components/NavBar";
+import NavBar from "@/app/dashboard/_components/nav-bar";
 import {
   Sheet,
   SheetContent,

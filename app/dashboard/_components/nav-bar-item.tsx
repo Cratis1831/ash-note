@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { NavItem } from "./NavBar";
+import { NavItem } from "./nav-bar";
 
 interface NavItemProps {
   item: NavItem;

@@ -1,7 +1,7 @@
 "use client";
 import { Dumbbell, Home, ListTodo } from "lucide-react";
 import { usePathname } from "next/navigation";
-import NavBarItem from "./NavBarItem";
+import NavBarItem from "./nav-bar-item";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 

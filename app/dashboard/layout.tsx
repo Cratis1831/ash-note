@@ -1,5 +1,5 @@
-import NextBreadcrumb from "@/components/BreadCrumbs";
-import NavBar from "./_components/NavBar";
+import NextBreadcrumb from "@/components/bread-crumbs";
+import NavBar from "./_components/nav-bar";
 import { auth } from "@clerk/nextjs/server";
 
 export default function DashboardLayout({
