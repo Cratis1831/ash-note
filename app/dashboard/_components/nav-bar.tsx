@@ -1,5 +1,5 @@
 "use client";
-import { Dumbbell, Folder, Home, ListTodo, PlusCircle } from "lucide-react";
+import { Folder, PlusCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 import NavBarItem from "./nav-bar-item";
 import { useUser } from "@clerk/nextjs";
@@ -21,23 +21,7 @@ export interface NavItem {
 
 function NavBar() {
   const { user } = useUser();
-  const navItems: NavItem[] = [
-    // {
-    //   name: "Home",
-    //   link: "/dashboard",
-    //   icon: <Home />,
-    // },
-    // {
-    //   name: "Workouts",
-    //   link: "/dashboard/workouts",
-    //   icon: <Dumbbell />,
-    // },
-    // {
-    //   name: "Habit Tracker",
-    //   link: "/dashboard/habit-tracker",
-    //   icon: <ListTodo />,
-    // },
-  ];
+  const navItems: NavItem[] = [];
 
   const pathname = usePathname();
 
@@ -58,6 +42,7 @@ function NavBar() {
       userId,
     });
   };
+
   return (
     <nav className="flex flex-col">
       <div className="flex items-center gap-2 pl-2 mt-2 border-b pb-8">

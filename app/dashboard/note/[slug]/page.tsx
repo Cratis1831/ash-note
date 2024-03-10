@@ -11,7 +11,6 @@ import { notFound, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
-import { Switch } from "@/components/ui/switch";
 import { StatusUpdate } from "@/components/set-status";
 
 function NoteDetails() {

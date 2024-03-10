@@ -4,15 +4,12 @@ import NoteCard from "./_components/note-card";
 import Image from "next/image";
 import CreateNote from "./_components/create-note";
 import { useQuery, useConvexAuth } from "convex/react";
-import { useUser } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SearchBar from "./_components/search-bar";
 import { useState } from "react";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./_components/columns";
-import { DndContext } from "@dnd-kit/core";
-import { Draggable } from "./_components/draggable";
 
 function Placeholder() {
   return (
@@ -32,7 +29,6 @@ function Placeholder() {
 
 function Dashboard() {
   const [search, setSearch] = useState("");
-
   const { isAuthenticated, isLoading } = useConvexAuth();
 
   const tasks = useQuery(
@@ -51,46 +47,42 @@ function Dashboard() {
     );
   }
 
-  // const isLoading = tasks === undefined;
-
   const filteredTasks = tasks?.filter((task) =>
     task.title.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <DndContext>
-      <div className="pl-8 pr-8 mb-8">
-        <h1 className="text-2xl md:text-4xl font-semibold pb-4">Your Notes</h1>
-        <div className="flex justify-between mt-4 gap-2 mb-8">
-          {/* <SearchBar /> */}
-          <SearchBar search={search} setSearch={setSearch} />
-          <CreateNote />
-        </div>
-        {filteredTasks?.length === 0 && <Placeholder />}
-        {filteredTasks && filteredTasks?.length > 0 && (
-          <Tabs defaultValue="Grid">
-            <TabsList className="mb-4">
-              <TabsTrigger value="Grid">Grid View</TabsTrigger>
-              <TabsTrigger value="DataTable" className="hidden md:flex">
-                Table View
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="Grid">
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mx-auto ">
-                {filteredTasks?.map((task) => (
-                  <Draggable key={task._id} id={task._id}>
-                    <NoteCard task={task} gridView />
-                  </Draggable>
-                ))}
-              </div>
-            </TabsContent>
-            <TabsContent value="DataTable" className="hidden md:flex">
-              <DataTable columns={columns} data={filteredTasks} />
-            </TabsContent>
-          </Tabs>
-        )}
+    <div className="pl-8 pr-8 mb-8">
+      <h1 className="text-2xl md:text-4xl font-semibold pb-4">Your Notes</h1>
+      <div className="flex justify-between mt-4 gap-2 mb-8">
+        {/* <SearchBar /> */}
+        <SearchBar search={search} setSearch={setSearch} />
+        <CreateNote />
       </div>
-    </DndContext>
+      {filteredTasks?.length === 0 && <Placeholder />}
+      {filteredTasks && filteredTasks?.length > 0 && (
+        <Tabs defaultValue="Grid">
+          <TabsList className="mb-4">
+            <TabsTrigger value="Grid">Grid View</TabsTrigger>
+            <TabsTrigger value="DataTable" className="hidden md:flex">
+              Table View
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="Grid">
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mx-auto ">
+              {filteredTasks?.map((task) => (
+                <div key={task._id}>
+                  <NoteCard task={task} gridView />
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+          <TabsContent value="DataTable" className="hidden md:flex">
+            <DataTable columns={columns} data={filteredTasks} />
+          </TabsContent>
+        </Tabs>
+      )}
+    </div>
   );
 }
 

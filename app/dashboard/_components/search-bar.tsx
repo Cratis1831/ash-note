@@ -1,8 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import { ChangeEvent, useState } from "react";
-// import { debounce, set } from "lodash";
+import { ChangeEvent } from "react";
 
 interface SearchBarProps {
   setSearch: (value: string) => void;
@@ -10,7 +9,6 @@ interface SearchBarProps {
 }
 function SearchBar({ setSearch, search }: SearchBarProps) {
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    // debounce(() => setSearch(e.target.value), 300);
     setSearch(e.target.value);
   };
   return (

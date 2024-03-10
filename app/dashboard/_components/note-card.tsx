@@ -43,7 +43,6 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { capitalize } from "@/lib/utils";
-import { Draggable } from "./draggable";
 
 interface NoteCardProps {
   task: Doc<"tasks">;
@@ -54,7 +53,6 @@ function NoteCard({ task, gridView }: NoteCardProps) {
   const router = useRouter();
 
   const deleteTask = useMutation(api.tasks.deleteTask);
-  const toggleTaskCompletion = useMutation(api.tasks.toggleCompleteTask);
 
   const creationTimeToDate = useMemo(
     () => new Date(task._creationTime),
@@ -65,16 +63,6 @@ function NoteCard({ task, gridView }: NoteCardProps) {
     () => formatDistance(creationTimeToDate, new Date(), { addSuffix: true }),
     [creationTimeToDate]
   );
-
-  const handleToggle = async (task: Doc<"tasks">) => {
-    try {
-      await toggleTaskCompletion({
-        id: task._id,
-      });
-    } catch (error) {
-      throw new ConvexError("Unable to toggle task completion");
-    }
-  };
 
   const handleDelete = async (id: Id<"tasks">) => {
     try {
