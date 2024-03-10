@@ -24,11 +24,7 @@ export const addTask = mutation({
     title: v.string(),
     description: v.string(),
     userId: v.string(),
-    status: v.union(
-      v.literal("pending"),
-      v.literal("in progress"),
-      v.literal("completed")
-    ),
+    status: v.string(),
   },
   handler: async (ctx, { title, description, userId, status }) => {
     const hasAccess = await handleAccess(ctx);
@@ -84,13 +80,9 @@ export const updateTask = mutation({
     title: v.string(),
     description: v.string(),
     isCompleted: v.boolean(),
-    status: v.union(
-      v.literal("pending"),
-      v.literal("in progress"),
-      v.literal("completed")
-    ),
+    status: v.string(),
   },
-  handler: async (ctx, { id, title, description, isCompleted }) => {
+  handler: async (ctx, { id, title, description, isCompleted, status }) => {
     const hasAccess = await handleAccess(ctx);
 
     if (!hasAccess) {
@@ -100,7 +92,7 @@ export const updateTask = mutation({
     if (!task) {
       throw new Error(`No task found with id ${id}`);
     }
-    await ctx.db.patch(id, { title, description, isCompleted });
+    await ctx.db.patch(id, { title, description, isCompleted, status });
   },
 });
 

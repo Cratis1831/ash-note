@@ -1,4 +1,5 @@
 "use client";
+import { StatusUpdate } from "@/components/set-status";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
+import { set } from "lodash";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -23,6 +25,7 @@ function CreateNote() {
   const { userId } = useAuth();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [statusUpdate, setStatusUpdate] = useState("pending");
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -37,7 +40,7 @@ function CreateNote() {
         title,
         description,
         userId: userId ?? "",
-        status: "pending",
+        status: statusUpdate,
       });
     } catch (error) {
       console.log(error);
@@ -45,6 +48,7 @@ function CreateNote() {
     setIsOpen(false);
     setTitle("");
     setDescription("");
+    setStatusUpdate("");
     setIsSubmitting(false);
   };
   return (
@@ -86,6 +90,19 @@ function CreateNote() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="status" className="text-right text-primary">
+              Status
+            </Label>
+            <div className="col-span-3 mt-2">
+              <StatusUpdate
+                status={statusUpdate}
+                onStatusUpdate={(status) => {
+                  setStatusUpdate(status);
+                }}
+              />
+            </div>
           </div>
         </div>
         <DialogFooter>

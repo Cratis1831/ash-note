@@ -7,6 +7,44 @@ import { formatRelative } from "date-fns";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { capitalize, cn } from "@/lib/utils";
+import {
+  ArrowUpCircle,
+  CheckCircle2,
+  Circle,
+  LucideIcon,
+  XCircle,
+} from "lucide-react";
+import { ReactNode } from "react";
+
+type Status = {
+  value: string;
+  label: string;
+  icon: LucideIcon;
+};
+
+const statuses: Status[] = [
+  {
+    value: "pending",
+    label: "Pending",
+    icon: Circle,
+  },
+  {
+    value: "in progress",
+    label: "In Progress",
+    icon: ArrowUpCircle,
+  },
+  {
+    value: "completed",
+    label: "Completed",
+    icon: CheckCircle2,
+  },
+  {
+    value: "canceled",
+    label: "Canceled",
+    icon: XCircle,
+  },
+];
 
 function UserCard({ userId }: { userId: string }) {
   const { user } = useUser();
@@ -15,8 +53,8 @@ function UserCard({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="flex gap-2 w-40 items-center">
-      <Avatar className="w-8 h-8">
+    <div className="flex gap-2 w-40 items-center text-xs">
+      <Avatar className="w-6 h-6">
         <AvatarImage src={user.imageUrl} />
         <AvatarFallback>AN</AvatarFallback>
       </Avatar>
@@ -55,16 +93,27 @@ export const columns: ColumnDef<Doc<"tasks">>[] = [
     },
   },
   {
-    accessorKey: "isCompleted",
+    accessorKey: "status",
     cell({ row }) {
+      const status = statuses.find(
+        (status) => status.value === row.original.status
+      );
       return (
-        <div className="flex justify-center items-center gap-2">
-          {row.original.isCompleted ? "✅" : "❌"}
+        <div
+          className={cn(
+            `flex justify-start items-center text-xs`,
+            row.original.status === "completed"
+              ? "border-success text-success"
+              : "border-secondary-background text-muted-foreground"
+          )}
+        >
+          {status && <status.icon className="mr-2 h-4 w-4 shrink-0" />}
+          {capitalize(status?.label || row.original.status)}
         </div>
       );
     },
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Complete" />;
+      return <DataTableColumnHeader column={column} title="Status" />;
     },
   },
   {

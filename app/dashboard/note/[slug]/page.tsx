@@ -12,15 +12,14 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { Switch } from "@/components/ui/switch";
+import { StatusUpdate } from "@/components/set-status";
 
 function NoteDetails() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [status, setStatus] = useState<"pending" | "in progress" | "completed">(
-    "pending"
-  );
+  const [statusUpdate, setStatusUpdate] = useState<string>("pending");
 
   const { user } = useUser();
 
@@ -51,7 +50,7 @@ function NoteDetails() {
         title,
         description,
         isCompleted: isCompleted,
-        status,
+        status: statusUpdate,
       });
       toast({
         variant: "success",
@@ -73,7 +72,7 @@ function NoteDetails() {
       setTitle(task.title);
       setDescription(task.description);
       setIsCompleted(task.isCompleted);
-      setStatus(task.status);
+      setStatusUpdate(task.status);
     }
   }, [task]);
 
@@ -112,7 +111,6 @@ function NoteDetails() {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-
           <div>
             <Label htmlFor="slug" className="text-right text-primary">
               Slug
@@ -128,20 +126,19 @@ function NoteDetails() {
             </div>
           </div>
           <div>
-            <div className="flex items-center space-x-2">
-              <Label
-                htmlFor="complete-status"
-                className="text-right text-primary"
-              >
-                Complete?
-              </Label>
-              <Switch
-                id="complete-status"
-                checked={isCompleted}
-                onCheckedChange={(checked) => setIsCompleted(checked)} // TODO: Add mutation to update isCompleted and Fix Setting
+            <Label htmlFor="status" className="text-right text-primary">
+              Status
+            </Label>
+            <div className="col-span-3 mt-2">
+              <StatusUpdate
+                status={statusUpdate}
+                onStatusUpdate={(status) => {
+                  setStatusUpdate(status);
+                }}
               />
             </div>
           </div>
+
           <Button
             onClick={() => handleUpdateTask(task!._id)}
             disabled={isSubmitting}

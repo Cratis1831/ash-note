@@ -42,6 +42,7 @@ import { ConvexError } from "convex/values";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
+import { capitalize } from "@/lib/utils";
 
 interface NoteCardProps {
   task: Doc<"tasks">;
@@ -158,11 +159,9 @@ function NoteCard({ task, gridView }: NoteCardProps) {
         )}
         <CardFooter>
           <Badge
-            variant={task.isCompleted ? "success" : "secondary"}
-            onClick={() => handleToggle(task)}
-            className="cursor-pointer"
+            variant={task.status === "completed" ? "success" : "secondary"}
           >
-            {task.isCompleted ? "Complete" : "In Progress"}
+            {capitalize(task.status)}
           </Badge>
         </CardFooter>
       </Card>

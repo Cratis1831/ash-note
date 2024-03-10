@@ -8,11 +8,7 @@ export default defineSchema({
     description: v.string(),
     userId: v.string(),
     slug: v.string(),
-    status: v.union(
-      v.literal("pending"),
-      v.literal("in progress"),
-      v.literal("completed")
-    ),
+    status: v.string(),
   })
     .index("by_isCompleted", ["isCompleted"])
     .index("by_userId", ["userId"])
