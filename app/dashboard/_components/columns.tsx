@@ -83,7 +83,7 @@ export const columns: ColumnDef<Doc<"tasks">>[] = [
     accessorKey: "description",
     cell({ row }) {
       return (
-        <div className="flex items-center gap-2 text-wrap max-w-lg">
+        <div className="flex items-center gap-2 text-wrap max-w-md">
           {row.original.description}
         </div>
       );
