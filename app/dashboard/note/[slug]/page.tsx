@@ -18,6 +18,9 @@ function NoteDetails() {
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [status, setStatus] = useState<"pending" | "in progress" | "completed">(
+    "pending"
+  );
 
   const { user } = useUser();
 
@@ -48,6 +51,7 @@ function NoteDetails() {
         title,
         description,
         isCompleted: isCompleted,
+        status,
       });
       toast({
         variant: "success",
@@ -69,6 +73,7 @@ function NoteDetails() {
       setTitle(task.title);
       setDescription(task.description);
       setIsCompleted(task.isCompleted);
+      setStatus(task.status);
     }
   }, [task]);
 
