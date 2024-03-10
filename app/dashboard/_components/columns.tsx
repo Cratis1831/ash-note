@@ -3,7 +3,7 @@
 import { Doc } from "@/convex/_generated/dataModel";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/ui/data-column-header";
-import { formatRelative } from "date-fns";
+import { formatDistance, formatRelative } from "date-fns";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
@@ -15,7 +15,6 @@ import {
   LucideIcon,
   XCircle,
 } from "lucide-react";
-import { ReactNode } from "react";
 
 type Status = {
   value: string;
@@ -134,7 +133,9 @@ export const columns: ColumnDef<Doc<"tasks">>[] = [
     cell({ row }) {
       return (
         <div className="flex items-center gap-2">
-          {formatRelative(new Date(row.original._creationTime), new Date())}
+          {formatDistance(new Date(row.original._creationTime), new Date(), {
+            addSuffix: true,
+          })}
         </div>
       );
     },

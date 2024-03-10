@@ -16,7 +16,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
-import { set } from "lodash";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 

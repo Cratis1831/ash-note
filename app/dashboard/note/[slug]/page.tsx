@@ -7,7 +7,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Loader2 } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
@@ -84,6 +84,8 @@ function NoteDetails() {
           <div className="text-2xl">Loading your note...</div>
         </div>
       )}
+
+      {task === null && !isLoading && notFound()}
 
       {!isLoading && task !== null && (
         <div className="flex flex-col max-w-xl gap-6 ml-6">
