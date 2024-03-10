@@ -14,21 +14,21 @@ export interface NavItem {
 function NavBar() {
   const { user } = useUser();
   const navItems: NavItem[] = [
-    {
-      name: "Home",
-      link: "/dashboard",
-      icon: <Home />,
-    },
-    {
-      name: "Workouts",
-      link: "/dashboard/workouts",
-      icon: <Dumbbell />,
-    },
-    {
-      name: "Habit Tracker",
-      link: "/dashboard/habit-tracker",
-      icon: <ListTodo />,
-    },
+    // {
+    //   name: "Home",
+    //   link: "/dashboard",
+    //   icon: <Home />,
+    // },
+    // {
+    //   name: "Workouts",
+    //   link: "/dashboard/workouts",
+    //   icon: <Dumbbell />,
+    // },
+    // {
+    //   name: "Habit Tracker",
+    //   link: "/dashboard/habit-tracker",
+    //   icon: <ListTodo />,
+    // },
   ];
 
   const pathname = usePathname();
