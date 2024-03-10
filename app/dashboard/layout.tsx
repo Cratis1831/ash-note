@@ -22,6 +22,7 @@ export default function DashboardLayout({
           listClasses="mx-2 font-bold"
           capitalizeLinks
         />
+
         {children}
       </div>
     </div>

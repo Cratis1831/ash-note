@@ -43,6 +43,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { capitalize } from "@/lib/utils";
+import { Draggable } from "./draggable";
 
 interface NoteCardProps {
   task: Doc<"tasks">;

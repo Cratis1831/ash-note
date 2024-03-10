@@ -6,6 +6,7 @@ import ConvexClientProvider from "@/providers/ConvexClientProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import Header from "@/components/Header";
 import { Toaster } from "@/components/ui/toaster";
+import { DndContext } from "@dnd-kit/core";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
         >
           <ConvexClientProvider>
             <Header />
+
             {children}
             <Toaster />
           </ConvexClientProvider>
