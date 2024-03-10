@@ -1,9 +1,17 @@
 "use client";
-import { Dumbbell, Home, ListTodo } from "lucide-react";
+import { Dumbbell, Folder, Home, ListTodo, PlusCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 import NavBarItem from "./nav-bar-item";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  Authenticated,
+  useConvexAuth,
+  useMutation,
+  useQuery,
+} from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export interface NavItem {
   name: string;
@@ -36,6 +44,20 @@ function NavBar() {
   const userInitials =
     user?.firstName?.charAt(0) ?? "" + user?.lastName?.charAt(1) ?? "";
 
+  const { isAuthenticated, isLoading } = useConvexAuth();
+  const addNotebook = useMutation(api.notebooks.addNotebook);
+  const notebooks = useQuery(
+    api.notebooks.getNotebooks,
+    isAuthenticated ? undefined : "skip"
+  );
+  const handleAddNotebook = async () => {
+    const title = "Untitled";
+    const userId = user!.id;
+    await addNotebook({
+      title,
+      userId,
+    });
+  };
   return (
     <nav className="flex flex-col">
       <div className="flex items-center gap-2 pl-2 mt-2 border-b pb-8">
@@ -50,7 +72,7 @@ function NavBar() {
           </p>
         </div>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
         {navItems.map((item) => (
           <NavBarItem
             key={item.name}
@@ -58,6 +80,29 @@ function NavBar() {
             active={pathname === item.link}
           />
         ))}
+        <Authenticated>
+          <Button onClick={handleAddNotebook}>
+            <PlusCircle />
+            <span className="pl-2">Add Notebook</span>
+          </Button>
+          {notebooks &&
+            notebooks.map((notebook) => (
+              <div
+                className="flex items-center justify-between text-sm pt-3 "
+                key={notebook._id}
+              >
+                <NavBarItem
+                  item={{
+                    name: notebook.title,
+                    link: `/dashboard/notebooks/${notebook._id}`,
+                    icon: <Folder />,
+                  }}
+                  active={pathname === `/dashboard/notebooks/${notebook._id}`}
+                />
+                ({Math.floor(Math.random() * 10) + 1})
+              </div>
+            ))}
+        </Authenticated>
       </div>
     </nav>
   );
