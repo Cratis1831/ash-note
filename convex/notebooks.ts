@@ -15,6 +15,27 @@ export const addNotebook = mutation({
   },
 });
 
+export const getNotebookCounts = query({
+  args: {},
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = identity.subject;
+
+    const tasks = await ctx.db
+      .query("tasks")
+
+      .filter((q) => q.eq(q.field("userId"), userId))
+      .collect();
+
+    return tasks.length;
+  },
+});
+
 export const getNotebooks = query({
   args: {},
   handler: async (ctx, args) => {

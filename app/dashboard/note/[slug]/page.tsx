@@ -5,13 +5,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useMutation, useQuery } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { Loader2 } from "lucide-react";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { StatusUpdate } from "@/components/set-status";
+import { Combobox } from "@/components/ui/combobox";
 
 function NoteDetails() {
   const [title, setTitle] = useState("");
@@ -19,6 +20,8 @@ function NoteDetails() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [statusUpdate, setStatusUpdate] = useState<string>("pending");
+  const [notebook, setNotebook] = useState<string>("");
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
   const { user } = useUser();
 
@@ -35,7 +38,17 @@ function NoteDetails() {
     userId,
   });
   const updateTask = useMutation(api.tasks.updateTask);
-  const isLoading = task === undefined;
+  const notebooks = useQuery(
+    api.notebooks.getNotebooks,
+    isAuthenticated ? undefined : "skip"
+  );
+
+  const modifiedNotebooks = notebooks?.map((notebook) => ({
+    value: notebook._id.toString(),
+    label: notebook.title,
+  }));
+
+  // const isLoading = task === undefined;
 
   const handleUpdateTask = async (id: Id<"tasks">) => {
     try {
@@ -50,6 +63,7 @@ function NoteDetails() {
         description,
         isCompleted: isCompleted,
         status: statusUpdate,
+        notebook,
       });
       toast({
         variant: "success",
@@ -72,6 +86,7 @@ function NoteDetails() {
       setDescription(task.description);
       setIsCompleted(task.isCompleted);
       setStatusUpdate(task.status);
+      setNotebook(task.notebook ?? "");
     }
   }, [task]);
 
@@ -84,9 +99,9 @@ function NoteDetails() {
         </div>
       )}
 
-      {task === null && !isLoading && notFound()}
+      {task === null && notebooks === null && !isLoading && notFound()}
 
-      {!isLoading && task !== null && (
+      {!isLoading && notebooks && task && (
         <div className="flex flex-col max-w-xl gap-6 ml-6">
           <div>
             <Label htmlFor="title" className="text-right text-primary">
@@ -113,19 +128,20 @@ function NoteDetails() {
             />
           </div>
           <div>
-            <Label htmlFor="slug" className="text-right text-primary">
-              Slug
+            <Label htmlFor="description" className="text-right text-primary">
+              Notebook
             </Label>
+
             <div className="col-span-3 mt-2">
-              <Input
-                id="slug"
-                placeholder="Slug of the note"
-                className="col-span-3 mt-2 cursor-not-allowed"
-                value={slug}
-                disabled
+              <Combobox
+                list={modifiedNotebooks!}
+                defaultValue="Select notebook..."
+                onItemSelect={setNotebook}
+                selectedItem={notebook}
               />
             </div>
           </div>
+
           <div>
             <Label htmlFor="status" className="text-right text-primary">
               Status

@@ -12,6 +12,7 @@ import {
   useQuery,
 } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import Link from "next/link";
 
 export interface NavItem {
   name: string;
@@ -32,6 +33,10 @@ function NavBar() {
   const addNotebook = useMutation(api.notebooks.addNotebook);
   const notebooks = useQuery(
     api.notebooks.getNotebooks,
+    isAuthenticated ? undefined : "skip"
+  );
+  const tasks = useQuery(
+    api.tasks.getTaskList,
     isAuthenticated ? undefined : "skip"
   );
   const handleAddNotebook = async () => {
@@ -66,26 +71,30 @@ function NavBar() {
           />
         ))}
         <Authenticated>
-          <Button onClick={handleAddNotebook}>
+          <Button onClick={handleAddNotebook} className="mb-2">
             <PlusCircle />
             <span className="pl-2">Add Notebook</span>
           </Button>
           {notebooks &&
             notebooks.map((notebook) => (
-              <div
-                className="flex items-center justify-between text-sm pt-3 "
+              <Link
+                href={`/dashboard/notebooks/${notebook._id}`}
+                className="flex items-center justify-between mb-2"
                 key={notebook._id}
               >
-                <NavBarItem
-                  item={{
-                    name: notebook.title,
-                    link: `/dashboard/notebooks/${notebook._id}`,
-                    icon: <Folder />,
-                  }}
-                  active={pathname === `/dashboard/notebooks/${notebook._id}`}
-                />
-                ({Math.floor(Math.random() * 10) + 1})
-              </div>
+                <div className="flex items-center">
+                  <Folder />
+                  <p className="pl-2">{notebook.title}</p>
+                </div>
+                <div>
+                  (
+                  {
+                    tasks?.filter((task) => task.notebook === notebook._id)
+                      .length
+                  }
+                  )
+                </div>
+              </Link>
             ))}
         </Authenticated>
       </div>

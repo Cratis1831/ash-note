@@ -9,6 +9,7 @@ export default defineSchema({
     userId: v.string(),
     slug: v.string(),
     status: v.string(),
+    notebook: v.optional(v.string()),
   })
     .index("by_isCompleted", ["isCompleted"])
     .index("by_userId", ["userId"])
@@ -18,6 +19,5 @@ export default defineSchema({
   notebooks: defineTable({
     title: v.string(),
     userId: v.string(),
-    taskId: v.optional(v.id("tasks")),
   }).index("by_userId", ["userId"]),
 });
